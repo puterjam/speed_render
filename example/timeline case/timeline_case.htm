@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+  <title>timeline</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <style>
+    html,body{
+    	padding:10px;
+    	margin:30px 0;
+    }
+    h1{
+    	font-size:1.5em;
+    }
+
+    nav{
+    	position: fixed;
+    	left: 0;
+    	top: 0;
+    	z-index: 1;
+    	padding: 10px;
+    	background:rgba(255,255,255,0.8);
+    	border-bottom:2px solid #E1E1E8;
+    	width: 100%;
+    }
+
+    nav button{
+    	background:#fff;
+    	font-size:18px;
+    	padding: 10px;
+    	border:2px solid #E1E1E8;
+    	-webkit-user-select: none;
+    }
+
+    nav select{
+    	-webkit-appearance: none;
+    	font-size:18px;
+    	padding: 10px 20px 10px 10px;
+    	border:2px solid #E1E1E8;
+    	border-radius: 0;
+    	background-color:#fff;
+    	background-image: -webkit-image-set(url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAICAYAAAAbQcSUAAAAaUlEQVQoz2P4//8/A7UwdkEGhiggTsODo4g2LBEImJmZvwE1/UfHIHGQPNGGAbHCggULFrKxsf1ENgjEB4mD5EnxJoaByAZB5Yk3DNlAPj6+L8gGkWUYzMC3b982IRtEtmFQjaxYxDAwAGi4TwMYKNLfAAAAAElFTkSuQmCC') 1x, url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACcAAAAQCAYAAACV3GYgAAAAWklEQVRIx+3VOwoAIAwD0B49N686CCJ+K0aHFrIl8LaKqsqvEccxcPEQo8bgNs4KTBth4HaByCMWbhWIcsDEzYCoy2xcD4hW8QWuBqJXeoXLQIwK/iEc57iDBIg+ClNpjek/AAAAAElFTkSuQmCC') 2x);
+    	background-position: right center;
+		background-repeat: no-repeat;
+		-webkit-user-select: none;
+    }
+
+    nav select:focus{
+    	outline: none;
+    }
+
+    nav label{
+        -webkit-user-select: none;
+    }
+    nav input[type="checkbox"] {
+        bottom: 2px;
+        height: 15px;
+        position: relative;
+        vertical-align: middle;
+        width: 15px;
+        -webkit-appearance: none;
+        border:2px solid #E1E1E8;
+        background-color:#fff;
+    }
+
+    nav input[type='checkbox']:checked::before{
+      background-image: -webkit-image-set(url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAAcklEQVQY02NgwA/YoJgoEA/Es4DYgJBCJSBeD8SboRinBiYg7kZS2IosyQ/Eakh8LySFq4FYHFlxGRBvBOJYqMRqJMU+yApNkSRAeC0Sux3dfSCTetE0wKyXxOWhMKhTYIr9CAUXyJMzgLgBagBBgDPGAI2LGdNt0T1AAAAAAElFTkSuQmCC') 1x, url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAA60lEQVQ4y2P4//8/Ay0wA00NpgC4AXEksgA1DNYA4vVAvBnZcEoNFgLihVBDNyMbTonBLEDchWYo3HBKDM7BYSgIZ5JrsBseQxuBmIkcg5EjCx1PBmJufGHsBMQFQMxORGTB8BIglsCXKmSBeA1U8RQgliMistYBsTq+dAxy4TQ0TSBLnPFE1iYgdkAPL3SDC/BECi4cjS0i0A12RgoGYnAxEDMSYzAIyGMJDmy4B4jZcCUdXKmCnUCwzAVifnxpklA6xhY0K4BYgVBiJyaDgIJmKtTQjUBsTEwuIjbnwYLGi9jsSZ8aZEgZDACI3DQYaeTU0AAAAABJRU5ErkJggg==') 2x);
+      background-size: 90% 90%;
+      background-repeat: no-repeat;
+      background-position: center center;
+      content: '';
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+
+    .wheel{
+    	position: relative;
+    	margin:10px;
+    	width:600px;
+    	height:96px;
+    	padding:2px;
+    	background:#EAEAEA;
+    	border:1px solid #E1E1E8;
+    	cursor: pointer;
+
+    }
+    .gear{
+    	position: absolute;
+    	width:96px;
+    	height:96px;
+    	background:#66C5DC;
+    }
+    .gear p {
+    	margin:5px;
+        line-height: 135%;
+    	color:#1D5C90;
+    }
+
+    /*init default css*/
+    #margin_gear{
+    	margin-left:0px;
+    }
+
+    #left_gear{
+    	left:2px;
+    }
+
+    #translate2D_gear{
+    	-webkit-transform: translateX(0);
+    }
+
+    #translate3D_gear{
+    	-webkit-transform: translate3D(0,0,0);
+    }
+
+    .trasition{
+    	-webkit-transition: all 2s ease-in-out
+    }
+
+    .none {
+    	display:none;
+    }
+
+    .color1 {
+        background-color: rgba(255, 212, 112, 0.3)
+    }
+
+    .silver_bullet{
+    	-webkit-transform: translateZ(0);
+    }
+  </style>
+</head>
+<body>
+  <nav id="toolbar">
+    <button onclick="reset()">Reset</button>
+    <select id="test_case" onchange="changeCase()">
+    	<option value="margin">Margin-Left</option>
+    	<option value="left">Left</option>
+    	<option value="translate2D">translate2D</option>
+    	<option value="translate3D">translate3D</option>
+    </select>
+    <select id="move_style" onchange="changeStyle()">
+        <option value="timer">timer</option>
+        <option value="raf">RAF</option>
+        <option value="css">CSS3</option>
+    </select>
+     <label><input type="checkbox" onchange="simCpuBusy(this.checked)"/>Simulate CPU in busy</label>
+    <label><input type="checkbox" onchange="switchSilverBullet(this.checked)"/>Use Silver Bullet</label>
+  </nav>
+
+  <div id="margin_layout" class="none">
+    <h1>Margin-Left</h1>
+    <div class="wheel" onclick="playMarginGear()">
+      <div id="margin_gear" class="gear">
+    	  <p>这是一个使用Margin进行移动的方块！</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="left_layout" class="none">
+    <h1>Left</h1>
+    <div class="wheel" onclick="playLeftGear()">
+      <div id="left_gear" class="gear">
+         <p>这是一个使用Left进行移动的方块！</p>
+      </div>
+    </div>
+  </div>
+  
+  <div id="translate2D_layout" class="none">
+    <h1>translate2D</h1>
+    <div class="wheel" onclick="playtranslate2DGear()">
+      <div id="translate2D_gear" class="gear">
+        <p>这是一个使用2D过渡进行移动的方块！</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="translate3D_layout" class="none">
+    <h1>translate3D</h1>
+    <div class="wheel" onclick="playtranslate3DGear()">
+      <div id="translate3D_gear" class="gear">
+        <p>这是一个使用3D过渡进行移动的方块！</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * 播放margin动画
+     */
+	function playMarginGear(){
+		if (document.getElementById("move_style").value == "css"){
+            margin_gear.style.marginLeft='504px';
+        }else{
+            ani.play(2,function(p){
+                margin_gear.style.marginLeft = 0 + (504*p) + 'px';
+            })
+        }
+	}
+
+    /**
+     * 播放位移动画
+     */
+	function playLeftGear(){
+        if (document.getElementById("move_style").value == "css"){
+		  left_gear.style.left='506px';
+        }else{
+            ani.play(2,function(p){
+                left_gear.style.marginLeft = 2 + (504*p) + 'px';
+            })
+        }
+	}
+
+    /**
+     * 播放2D过度动画
+     */
+	function playtranslate2DGear(){
+        if (document.getElementById("move_style").value == "css"){
+		  translate2D_gear.style.webkitTransform='translateX(504px)';
+        }else{
+            ani.play(2,function(p){
+                translate2D_gear.style.webkitTransform = 'translateX(' +0 + (504*p) + 'px)';
+            })
+        }
+	}
+
+    /**
+     * 播放3D过度动画
+     */
+	function playtranslate3DGear(){
+         if (document.getElementById("move_style").value == "css"){
+		  translate3D_gear.style.webkitTransform='translate3D(504px,0,0)';
+        }else{
+            ani.play(2,function(p){
+                translate3D_gear.style.webkitTransform = 'translate3D(' +0 + (504*p) + 'px,0,0)';
+            })
+        }
+	}
+
+	/*暂时不使用*/
+	function playAll(){
+		playMarginGear();
+		playLeftGear();
+		playtranslate2DGear();
+		playtranslate3DGear();
+	}
+
+    /**
+     * 重设
+     */
+	function reset(){
+		margin_gear.style.marginLeft='';
+		left_gear.style.left='';
+		translate2D_gear.style.webkitTransform='';
+		translate3D_gear.style.webkitTransform='';
+	} 
+
+    /**
+     * 跟换case
+     */
+    function changeCase(){
+        var val = document.getElementById("test_case").value;
+        if (window.__case) {
+            document.getElementById(window.__case).className = "none";
+        }
+
+        document.getElementById(val+"_layout").className = "";
+        location.hash = val;
+        window.__case = val+"_layout";
+    }
+
+    function changeStyle(){
+        var val = document.getElementById("move_style").value;
+        if (val == "css") {
+            Array.prototype.forEach.call(document.querySelectorAll(".gear"),function(dom){
+                dom.className = "gear trasition";
+            })
+        }else{
+            Array.prototype.forEach.call(document.querySelectorAll(".gear"),function(dom){
+                dom.className = "gear";
+            })
+            ani.setTimeType(val=="timer"?0:1);
+        }
+    }
+
+    /**
+     * 设置css银弹
+     */
+    function switchSilverBullet(val){
+        var tb = document.getElementById("toolbar");
+        tb.className = !val?"":"silver_bullet color1";
+    }
+
+    /**
+     * mini animation lib
+     */
+    var ani = (function(){
+        var startTime = 0;
+        var _time = 0;
+        var _callback = null;
+        var playType = 0;//0 = timer, 1 = raf
+        var _callCount = 0;
+
+        var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame;
+
+
+        function playAnimation(time,cb){
+            startTime = (new Date()).getTime();
+            _time = time*1000;
+            _callback = cb;
+
+            _callCount = 0;
+           
+           (playType && raf(_ani)) || setTimeout(_ani,16);
+        }
+
+        function _ani(){
+            _callCount++;
+
+            var now = (new Date()).getTime();
+            var count = now - startTime;
+
+            var cb = function(val){
+                _callback(val || easeInOut(count,0,1,_time));
+                console.log(_callCount);
+            }
+
+            if (count>=_time){
+                cb(1);
+                return;
+            }
+
+            cb();
+
+            (playType && raf(_ani)) || setTimeout(_ani,16);
+        }
+
+        function easeInOut(t, b, c, d){
+            if ((t /= d / 2) < 1) {
+                return c / 2 * t * t + b;
+            }
+            return -c / 2 * ((--t) * (t - 2) - 1) + b;
+        }
+
+        function setTimeType(type){
+            playType = type;
+        }
+
+        return {
+            play:playAnimation,
+            setTimeType:setTimeType
+        }
+    })();
+
+    /**
+     * 模拟cpu比较忙的情况
+     */
+    var simCpuBusy = (function (){
+        var busy;
+    
+        return function simCpuBusy(toggle) {
+            if(toggle) {
+                //每150毫秒去做一次需要100毫秒的计算
+                busy = window.setInterval(function() {
+                    var date = new Date();
+                    while((new Date() - date) < 100) {
+                        eval("1+1");
+                    };
+                }, 150);
+            } else {
+                window.clearInterval(busy);
+            }
+        }
+    })();
+
+    /**
+     * 初始化
+     */
+    (function init(){
+        if (location.hash) {
+            var tc = document.getElementById("test_case");
+            tc.value = location.hash.substr(1);
+            tc.selectedIndex == -1 && (tc.selectedIndex = 0);
+        };
+
+        changeCase();
+    })();
+  </script>
+</body>
+</html>

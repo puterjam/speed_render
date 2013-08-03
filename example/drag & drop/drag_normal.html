@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>drag demo</title>
+	
+	
+	<style>
+
+		.drag{
+			position: absolute;
+			padding: 10px;
+			box-shadow: 0px 3px 5px #444;
+			border: 1px solid #999;
+			-webkit-user-select: none;
+			cursor: move;
+		}
+		h1{
+			margin: 0 0 10px 0;
+			padding: 10px;
+			border-bottom: 1px solid #999;
+		}
+		iframe{
+			pointer-events:none;
+		}
+	</style>
+</head>
+<body>
+	<div id="drag" class="drag"><h1>CPU 计算下的拖拽</h1><iframe src="http://www.qq.com" width="400px" height="400px">drag me</iframe></div>
+
+	<script>
+		var _drag = document.getElementById("drag");
+		var _clientX,_clientY;
+		var _mousedown = function(evt){
+			_clientX = evt.clientX - (_drag._x || 0);
+			_clientY = evt.clientY - (_drag._y || 0);
+			
+			document.addEventListener("mousemove",update,true);
+			document.addEventListener("mouseup",clearEvent,true);
+		}
+		
+		var clearEvent = function(evt){
+			document.removeEventListener("mousemove",update,true);
+			document.removeEventListener("mouseup",clearEvent,true);
+		}
+		
+		var update = function(evt){
+			_drag._x = evt.clientX - _clientX;
+			_drag._y = evt.clientY - _clientY;
+			
+			//绘制拖拽的坐标
+			draw();
+		}
+		
+		var draw = function(){
+			_drag.style.left = _drag._x + "px";
+			_drag.style.top = _drag._y + "px";
+		}
+
+		_drag.addEventListener("mousedown",_mousedown,true);
+	</script>
+</body>
+</html>
