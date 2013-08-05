@@ -24,7 +24,7 @@
 	</style>
 </head>
 <body>
-	<div id="drag" class="drag"><h1>RAF + GPU 加速的拖拽</h1><iframe id="if" src="http://www.qq.com" width="400px" height="400px">drag me</iframe></div>
+	<div id="drag" class="drag"><h1>RAF + GPU 加速的拖拽</h1><iframe id="if" src="about:blank" width="400px" height="400px">drag me</iframe></div>
 	
 	<script>
 		var _drag = document.getElementById("drag");
@@ -50,7 +50,8 @@
 		}
 		
 		var draw = function(){
-			_drag.style.webkitTransform = "translate3D(" + _drag._x + "px," + _drag._y + "px,0px)";
+		//	_drag.style.webkitTransform = "translate3D(" + _drag._x + "px," + _drag._y + "px,0px)";
+			_drag.style.webkitTransform = "translate(" + _drag._x + "px," + _drag._y + "px)";
 			rAF = requestAnimationFrame(draw);
 		}
 		

@@ -2,10 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
   <title>timeline</title>
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <style>
     html,body{
     	padding:10px;
@@ -110,14 +107,17 @@
 
     #translate2D_gear{
     	-webkit-transform: translateX(0);
+        -ms-transform: translateX(0);
     }
 
     #translate3D_gear{
     	-webkit-transform: translate3D(0,0,0);
+        -ms-transform: translate3D(0,0,0);
     }
 
     .trasition{
-    	-webkit-transition: all 2s ease-in-out
+    	-webkit-transition: all 2s ease-in-out;
+        -ms-transition: all 2s ease-in-out;
     }
 
     .none {
@@ -130,6 +130,7 @@
 
     .silver_bullet{
     	-webkit-transform: translateZ(0);
+        -ms-transform: translateZ(0);
     }
   </style>
 </head>
@@ -219,10 +220,10 @@
      */
 	function playtranslate2DGear(){
         if (document.getElementById("move_style").value == "css"){
-		  translate2D_gear.style.webkitTransform='translateX(504px)';
+		 translate2D_gear.style.msTransform = translate2D_gear.style.webkitTransform='translateX(504px)';
         }else{
             ani.play(2,function(p){
-                translate2D_gear.style.webkitTransform = 'translateX(' +0 + (504*p) + 'px)';
+                translate2D_gear.style.msTransform = translate2D_gear.style.webkitTransform = 'translateX(' +0 + (504*p) + 'px)';
             })
         }
 	}
@@ -232,10 +233,10 @@
      */
 	function playtranslate3DGear(){
          if (document.getElementById("move_style").value == "css"){
-		  translate3D_gear.style.webkitTransform='translate3D(504px,0,0)';
+		  translate3D_gear.style.msTransform = translate3D_gear.style.webkitTransform='translate3D(504px,0,0)';
         }else{
             ani.play(2,function(p){
-                translate3D_gear.style.webkitTransform = 'translate3D(' +0 + (504*p) + 'px,0,0)';
+                translate3D_gear.style.msTransform = translate3D_gear.style.webkitTransform = 'translate3D(' +0 + (504*p) + 'px,0,0)';
             })
         }
 	}
@@ -302,7 +303,8 @@
         var _time = 0;
         var _callback = null;
         var playType = 0;//0 = timer, 1 = raf
-        var _callCount = 0;
+        var _lastTime = 0;
+        //var _callCount = 0;
 
         var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame;
 
@@ -318,14 +320,16 @@
         }
 
         function _ani(){
-            _callCount++;
+           // _callCount++;
 
             var now = (new Date()).getTime();
+
+            _lastTime && console.log(now - _lastTime);
             var count = now - startTime;
 
             var cb = function(val){
                 _callback(val || easeInOut(count,0,1,_time));
-                console.log(_callCount);
+              //  console.log(_callCount);
             }
 
             if (count>=_time){
@@ -335,6 +339,7 @@
 
             cb();
 
+            _lastTime = (new Date()).getTime();
             (playType && raf(_ani)) || setTimeout(_ani,16);
         }
 

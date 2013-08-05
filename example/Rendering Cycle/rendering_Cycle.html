@@ -16,6 +16,7 @@
  		font-family: arial;
  		color:#333;
  		background:#e5e5e5;
+ 		cursor: pointer;
  	}
  	.console{
  		padding:4px;
@@ -33,9 +34,10 @@
   </style>
   </head>
   <body>
- 	<pre>testcase.buildDom()</pre>
- 	<pre>testcase.calculateCSS()</pre>
- 	<pre>testcase.buildRenderTree()</pre>
+ 	<pre onclick="testcase.buildDom()">testcase.buildDom()</pre>
+ 	<pre onclick="testcase.calculateCSS()">testcase.calculateCSS()</pre>
+ 	<pre onclick="testcase.buildRenderTree()">testcase.buildRenderTree()</pre>
+ 	<pre onclick="testcase.repaintBody()">testcase.repaintBody()</pre>
  	<div id="shell" class="console"></div>
 
  	<script>
@@ -46,7 +48,7 @@
 	  	//1.Build the DOM
 	  	function buildDom(){
 	  		var _div = document.createElement("div");
-	  		//_div.innerHTML = text;
+	  		_div.innerHTML = text;
 	  		shell.appendChild(_div);
 	  	}
 
@@ -60,13 +62,39 @@
 	  		shell.innerHTML = text;
 	  	}
 
+		function repaintBody(){
+			var bstyle = document.body.style; // cache
+		 
+		 	setTimeout(function(){
+				bstyle.padding = "20px"; // layout, recalculate Style
+				bstyle.border = "10px solid #666"; // layout, recalculate Style
+			},16);
+
+		 	setTimeout(function(){
+				bstyle.color = "blue"; // recalculate Style only, no dimensions changed
+				bstyle.backgroundColor = "#eee"; // ecalculate Style
+			},32);
+
+		 	setTimeout(function(){
+				bstyle.fontSize = "2em"; // layout, recalculate Style
+			},48);
+
+			setTimeout(function(){
+				// new DOM element - layout, recalculate Style
+				shell.appendChild(document.createTextNode('hi!'));
+			},64);
+		}
+
 	  	return {
 	  		buildDom:buildDom,
 	  		calculateCSS:calculateCSS,
 	  		buildRenderTree:buildRenderTree,
+	  		repaintBody:repaintBody,
 	  		shell:shell
 	  	}
 	  })();
+
+
   </script>
   </body>
  </html>

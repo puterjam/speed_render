@@ -6,7 +6,6 @@
 	
 	
 	<style>
-
 		.drag{
 			position: absolute;
 			padding: 10px;
@@ -26,7 +25,7 @@
 	</style>
 </head>
 <body>
-	<div id="drag" class="drag"><h1>GPU加速的拖拽</h1><iframe src="http://www.qq.com" width="400px" height="400px">drag me</iframe></div>
+	<div id="drag" class="drag"><h1>GPU加速的拖拽</h1><iframe src="about:blank" width="400px" height="400px">drag me</iframe></div>
 	
 	<script>
 		var _drag = document.getElementById("drag");
@@ -54,11 +53,11 @@
 		}
 		
 		var draw = function(){
-
 			//_drag.style.left = _drag._x + "px";
 			//_drag.style.top = _drag._y + "px";
-			
+			//
 			_drag.style.webkitTransform = "translate3D(" + _drag._x + "px," + _drag._y + "px,0px)";
+			//_drag.style.webkitTransform = "translate(" + _drag._x + "px," + _drag._y + "px)";
 		}
 
 		_drag.addEventListener("mousedown",_mousedown,true);
