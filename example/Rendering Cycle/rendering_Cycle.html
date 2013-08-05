@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+  <title>timeline</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <style>
+	html,body{
+  		font-size:10px;
+  	}
+ 	pre{
+ 		padding:4px;
+ 		border-radius: 4px;
+ 		font-family: arial;
+ 		color:#333;
+ 		background:#e5e5e5;
+ 	}
+ 	.console{
+ 		padding:4px;
+ 		border-radius: 4px;
+ 		border: 1px solid #e5e5e5;
+ 	}
+ 	.theme1 {
+ 		border:1px solid #232323;
+ 		background:#2B2B2B;
+ 		color:#E6E1DC;
+ 	}
+ 	.red {
+ 		color:red;
+ 	}
+  </style>
+  </head>
+  <body>
+ 	<pre>testcase.buildDom()</pre>
+ 	<pre>testcase.calculateCSS()</pre>
+ 	<pre>testcase.buildRenderTree()</pre>
+ 	<div id="shell" class="console"></div>
+
+ 	<script>
+	  var testcase = (function(){
+	  	var text = '<div>hello <span class="red">world!</span></div>I Love Javascript.';
+
+	  	var shell = document.getElementById("shell");
+	  	//1.Build the DOM
+	  	function buildDom(){
+	  		var _div = document.createElement("div");
+	  		//_div.innerHTML = text;
+	  		shell.appendChild(_div);
+	  	}
+
+	  	//2. Calculate CSS property values
+	  	function calculateCSS(){
+	  		shell.className = "console theme1"
+	  	}
+
+	  	//3.Build the rendering tree
+	  	function buildRenderTree(){
+	  		shell.innerHTML = text;
+	  	}
+
+	  	return {
+	  		buildDom:buildDom,
+	  		calculateCSS:calculateCSS,
+	  		buildRenderTree:buildRenderTree,
+	  		shell:shell
+	  	}
+	  })();
+  </script>
+  </body>
+ </html>
