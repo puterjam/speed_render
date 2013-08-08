@@ -17,6 +17,7 @@
  		color:#333;
  		background:#e5e5e5;
  		cursor: pointer;
+ 		-webkit-user-select: none;
  	}
  	.console{
  		padding:4px;
@@ -31,6 +32,11 @@
  	.red {
  		color:red;
  	}
+ 	.div-style{
+ 		padding:10px;
+ 		background:#000;
+ 		color:#fff;
+ 	}
   </style>
   </head>
   <body>
@@ -41,6 +47,9 @@
  	<pre onclick="testcase.doBadLayout()">testcase.doBadLayout()</pre>
  	<pre onclick="testcase.doGoodLayout()">testcase.doGoodLayout()</pre>
 	<pre onclick="testcase.compareLayout()">testcase.compareLayout()</pre>
+	<pre onclick="testcase.setClassName('console div-style')">testcase.setClassName('console div-style')</pre>
+	<pre onclick="testcase.addClassName('div-style')">testcase.addClassName('div-style')</pre>
+	<pre onclick="testcase.removeClassName('div-style')">testcase.removeClassName('div-style')</pre>
 
  	<div id="shell" class="console"></div>
  	<div id="aDiv" class="console" style="margin-top:10px;width:100px;height:100px">我是一个盒子</div>
@@ -107,6 +116,18 @@
 				aDiv.style.height = newHeight + 'px'; // Write
 		}
 
+		function setClassName(name){
+			aDiv.className = name;
+		}
+
+		function addClassName(name){
+			aDiv.classList.add(name);
+		}
+
+		function removeClassName(name){
+			aDiv.classList.remove(name);
+		}
+
 		function compareLayout(){
 			var n = new Date();
 			var t = 1000;
@@ -132,6 +153,9 @@
 	  		doBadLayout:doBadLayout,
 	  		doGoodLayout:doGoodLayout,
 	  		compareLayout:compareLayout,
+	  		setClassName:setClassName,
+	  		addClassName:addClassName,
+	  		removeClassName:removeClassName,
 	  		shell:shell
 	  	}
 	  })();
