@@ -38,8 +38,10 @@
  	<pre onclick="testcase.calculateCSS()">testcase.calculateCSS()</pre>
  	<pre onclick="testcase.buildRenderTree()">testcase.buildRenderTree()</pre>
  	<pre onclick="testcase.repaintBody()">testcase.repaintBody()</pre>
+ 	<pre onclick="testcase.doBadLayout()">testcase.doBadLayout()</pre>
+ 	<pre onclick="testcase.doGoodLayout()">testcase.doGoodLayout()</pre>
  	<div id="shell" class="console"></div>
-
+ 	<div id="aDiv" class="console" style="margin-top:10px;width:100px;height:100px">我是一个盒子</div>
  	<script>
 	  var testcase = (function(){
 	  	var text = '<div>hello <span class="red">world!</span></div>I Love Javascript.';
@@ -64,7 +66,7 @@
 
 		function repaintBody(){
 			var bstyle = document.body.style; // cache
-		 
+
 		 	setTimeout(function(){
 				bstyle.padding = "20px"; // layout, recalculate Style
 				bstyle.border = "10px solid #666"; // layout, recalculate Style
@@ -85,11 +87,31 @@
 			},64);
 		}
 
+		function doBadLayout(){
+			// Suboptimal, causes layout twice.
+			var newWidth = aDiv.offsetWidth + 10; // Read
+			aDiv.style.width = newWidth + 'px'; // Write
+
+			var newHeight = aDiv.offsetHeight + 10; // Read
+			aDiv.style.height = newHeight + 'px'; // Write
+ 		}
+		
+		function doGoodLayout(){
+				// Better, only one layout.
+				var newWidth = aDiv.offsetWidth + 10; // Read
+				var newHeight = aDiv.offsetHeight + 10; // Read
+
+				aDiv.style.width = newWidth + 'px'; // Write
+				aDiv.style.height = newHeight + 'px'; // Write
+		}
+
 	  	return {
 	  		buildDom:buildDom,
 	  		calculateCSS:calculateCSS,
 	  		buildRenderTree:buildRenderTree,
 	  		repaintBody:repaintBody,
+	  		doBadLayout:doBadLayout,
+	  		doGoodLayout:doGoodLayout,
 	  		shell:shell
 	  	}
 	  })();
