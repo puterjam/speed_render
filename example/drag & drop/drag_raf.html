@@ -35,7 +35,7 @@
 			
 			document.addEventListener("mousemove",update,true);
 			document.addEventListener("mouseup",clearEvent,true);
-			//draw(); //鼠标点击开始拖拽后
+			draw(); //鼠标点击开始
 		}
 		
 		var clearEvent = function(evt){
@@ -47,14 +47,12 @@
 		var update = function(evt){
 			_drag._x = evt.clientX - _clientX;
 			_drag._y = evt.clientY - _clientY;
-			cancelAnimationFrame(rAF);
-			rAF = requestAnimationFrame(draw);
 		}
 		
 		var draw = function(){
 			_drag.style.webkitTransform = "translate3D(" + _drag._x + "px," + _drag._y + "px,0px)";
 		//		_drag.style.webkitTransform = "translate(" + _drag._x + "px," + _drag._y + "px)";
-			//rAF = requestAnimationFrame(draw);
+			rAF = requestAnimationFrame(draw);
 		}
 		
 		//RAF 支持~
