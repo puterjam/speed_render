@@ -40,6 +40,8 @@
  	<pre onclick="testcase.repaintBody()">testcase.repaintBody()</pre>
  	<pre onclick="testcase.doBadLayout()">testcase.doBadLayout()</pre>
  	<pre onclick="testcase.doGoodLayout()">testcase.doGoodLayout()</pre>
+	<pre onclick="testcase.compareLayout()">testcase.compareLayout()</pre>
+
  	<div id="shell" class="console"></div>
  	<div id="aDiv" class="console" style="margin-top:10px;width:100px;height:100px">我是一个盒子</div>
  	<script>
@@ -105,6 +107,23 @@
 				aDiv.style.height = newHeight + 'px'; // Write
 		}
 
+		function compareLayout(){
+			var n = new Date();
+			var t = 1000;
+
+			for (var i=0;i<t;i++){
+				doBadLayout();
+			}
+			var n1 = new Date() - n;
+
+			n = new Date();
+			for (var i=0;i<t;i++){
+				doGoodLayout();
+			}
+			var n2 = new Date() - n;
+			alert((n1-n2)+"ms");
+		}
+
 	  	return {
 	  		buildDom:buildDom,
 	  		calculateCSS:calculateCSS,
@@ -112,6 +131,7 @@
 	  		repaintBody:repaintBody,
 	  		doBadLayout:doBadLayout,
 	  		doGoodLayout:doGoodLayout,
+	  		compareLayout:compareLayout,
 	  		shell:shell
 	  	}
 	  })();
