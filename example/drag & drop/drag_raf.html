@@ -47,10 +47,21 @@
 		var update = function(evt){
 			_drag._x = evt.clientX - _clientX;
 			_drag._y = evt.clientY - _clientY;
+			_drag._shouldMoved = true;
 		}
 		
 		var draw = function(){
+			//没位移就不渲染
+			if (!_drag._shouldMoved) {
+				rAF = requestAnimationFrame(draw);
+				return;
+			}
+
+			_drag._lastX = _drag._x;
+			_drag._lastY = _drag._y;
+
 			_drag.style.webkitTransform = "translate3D(" + _drag._x + "px," + _drag._y + "px,0px)";
+			_drag._shouldMoved = false;
 		//		_drag.style.webkitTransform = "translate(" + _drag._x + "px," + _drag._y + "px)";
 			rAF = requestAnimationFrame(draw);
 		}
