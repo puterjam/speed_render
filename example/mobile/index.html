@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>drag demo</title>
+    <meta name="viewport" content="initial-scale=1 ,user-scalable=no">
+	<style>
+
+		.drag{
+			position: absolute;
+			padding: 10px;
+			box-shadow: 0px 3px 5px #444;
+			border: 1px solid #999;
+			-webkit-user-select: none;
+			cursor: move;
+		}
+		h1{
+			margin: 0 0 10px 0;
+			padding: 10px;
+			border-bottom: 1px solid #999;
+            font-size:12px;
+		}
+	</style>
+</head>
+<body>
+	<div id="drag" class="drag">test</div>
+	
+	<script>
+		var _drag = document.getElementById("drag");
+		var _clientX,_clientY,rAF;
+
+
+        var getPointerEvent = function(evt){
+            return (evt.touches && evt.touches.length && evt.touches[0]) || evt;
+        }
+
+		var _mousedown = function(evt){
+
+			_clientX = getPointerEvent(evt).clientX - (_drag._x || 0);
+			_clientY = getPointerEvent(evt).clientY - (_drag._y || 0);
+
+            document.addEventListener("touchmove",update,false);
+            document.addEventListener("touchend",clearEvent,true);
+			draw(); //鼠标点击开始
+            evt.preventDefault();
+		}
+		
+		var clearEvent = function(evt){
+            console.log("remove")
+            document.removeEventListener("touchmove",update,true);
+            document.removeEventListener("touchend",clearEvent,true);
+			cancelAnimationFrame(rAF);
+		}
+		
+		var update = function(evt){
+            console.log(evt)
+			_drag._x = getPointerEvent(evt).clientX - _clientX;
+			_drag._y = getPointerEvent(evt).clientY - _clientY;
+			_drag._shouldMoved = true;
+		}
+		
+		var draw = function(){
+			//没位移就不渲染
+			if (!_drag._shouldMoved) {
+				rAF = requestAnimationFrame(draw);
+				return;
+			}
+
+			_drag._lastX = _drag._x;
+			_drag._lastY = _drag._y;
+
+			_drag.style.webkitTransform = "translate3D(" + _drag._x + "px," + _drag._y + "px,0px)";
+        //    _drag.style.left = _drag._x + "px";
+        //    _drag.style.top = _drag._y + "px";
+			_drag._shouldMoved = false;
+		//		_drag.style.webkitTransform = "translate(" + _drag._x + "px," + _drag._y + "px)";
+			rAF = requestAnimationFrame(draw);
+		}
+		
+		//RAF 支持~
+		requestAnimationFrame = window.requestAnimationFrame ||
+		    window.mozRequestAnimationFrame ||
+		    window.webkitRequestAnimationFrame ||
+		    window.msRequestAnimationFrame ||
+		    window.oRequestAnimationFrame ||
+		    function(callback) {return setTimeout(callback, 1000 / 60); };		
+	
+		cancelAnimationFrame = window.cancelAnimationFrame ||
+		    window.mozCancelAnimationFrame ||
+		    window.webkitCancelAnimationFrame ||
+		    window.msCancelAnimationFrame ||
+		    window.oCancelAnimationFrame ||
+		    function(callback) {return clearTimeout(callback, 1000 / 60); };	
+		
+		_drag.addEventListener("touchstart",_mousedown,true);
+	</script>
+</body>
+</html>

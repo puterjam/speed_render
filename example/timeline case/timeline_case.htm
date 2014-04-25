@@ -13,9 +13,7 @@
     }
 
     nav{
-    	position: fixed;
-    	left: 0;
-    	top: 0;
+    	margin:-80px 0px 0px -10px;
     	z-index: 1;
     	padding: 10px;
     	background:rgba(255,255,255,0.8);
@@ -76,7 +74,7 @@
     .wheel{
     	position: relative;
     	margin:10px;
-    	width:600px;
+    	width:800px;
     	height:96px;
     	padding:2px;
     	background:#EAEAEA;
@@ -148,6 +146,11 @@
         <option value="raf">RAF</option>
         <option value="css">CSS3</option>
     </select>
+    <select id="time" onchange="changeStyle()">
+        <option value="2">2s</option>
+        <option value="5">5s</option>
+        <option value="10">10s</option>
+    </select>
      <label><input type="checkbox" onchange="simCpuBusy(this.checked)"/>Simulate CPU in busy</label>
     <!-- <label><input type="checkbox" onchange="switchSilverBullet(this.checked)"/>Use Silver Bullet</label> -->
   </nav>
@@ -194,10 +197,10 @@
      */
 	function playMarginGear(){
 		if (document.getElementById("move_style").value == "css"){
-            margin_gear.style.marginLeft='504px';
+            margin_gear.style.marginLeft='704px';
         }else{
-            ani.play(2,function(p){
-                margin_gear.style.marginLeft = 0 + (504*p) + 'px';
+            ani.play(document.getElementById("time").value,function(p){
+                margin_gear.style.marginLeft = 0 + (704*p) + 'px';
             })
         }
 	}
@@ -207,10 +210,10 @@
      */
 	function playLeftGear(){
         if (document.getElementById("move_style").value == "css"){
-		  left_gear.style.left='506px';
+		  left_gear.style.left='706px';
         }else{
-            ani.play(2,function(p){
-                left_gear.style.marginLeft = 2 + (504*p) + 'px';
+            ani.play(document.getElementById("time").value,function(p){
+                left_gear.style.left = 2 + (704*p) + 'px';
             })
         }
 	}
@@ -220,10 +223,10 @@
      */
 	function playtranslate2DGear(){
         if (document.getElementById("move_style").value == "css"){
-		 translate2D_gear.style.msTransform = translate2D_gear.style.webkitTransform='translateX(504px)';
+		 translate2D_gear.style.msTransform = translate2D_gear.style.webkitTransform='translateX(704px)';
         }else{
-            ani.play(2,function(p){
-                translate2D_gear.style.msTransform = translate2D_gear.style.webkitTransform = 'translateX(' +0 + (504*p) + 'px)';
+            ani.play(document.getElementById("time").value,function(p){
+                translate2D_gear.style.msTransform = translate2D_gear.style.webkitTransform = 'translateX(' +0 + (704*p) + 'px)';
             })
         }
 	}
@@ -233,10 +236,10 @@
      */
 	function playtranslate3DGear(){
          if (document.getElementById("move_style").value == "css"){
-		  translate3D_gear.style.msTransform = translate3D_gear.style.webkitTransform='translate3D(504px,0,0)';
+		  translate3D_gear.style.msTransform = translate3D_gear.style.webkitTransform='translate3D(704px,0,0)';
         }else{
-            ani.play(2,function(p){
-                translate3D_gear.style.msTransform = translate3D_gear.style.webkitTransform = 'translate3D(' +0 + (504*p) + 'px,0,0)';
+            ani.play(document.getElementById("time").value,function(p){
+                translate3D_gear.style.msTransform = translate3D_gear.style.webkitTransform = 'translate3D(' +0 + (704*p) + 'px,0,0)';
             })
         }
 	}
@@ -275,13 +278,17 @@
 
     function changeStyle(){
         var val = document.getElementById("move_style").value;
+        var timeVal = document.getElementById("time").value;
         if (val == "css") {
             Array.prototype.forEach.call(document.querySelectorAll(".gear"),function(dom){
-                dom.className = "gear trasition";
+            	dom.style.transition = dom.style.msTransition = "all "+timeVal+"s ease-in-out";
+            	//    	'-webkit-transition: all 2s ease-in-out; -ms-transition: all 2s ease-in-out;
+                //dom.className = "gear trasition";
             })
         }else{
             Array.prototype.forEach.call(document.querySelectorAll(".gear"),function(dom){
-                dom.className = "gear";
+            	dom.style.transition = dom.style.msTransition  = "";
+               // dom.className = "gear";
             })
             ani.setTimeType(val=="timer"?0:1);
         }
@@ -316,7 +323,7 @@
 
             _callCount = 0;
            
-           (playType && raf(_ani)) || setTimeout(_ani,16);
+           (playType && raf(_ani)) || setTimeout(_ani,16.6);
         }
 
         function _ani(){
@@ -340,7 +347,7 @@
             cb();
 
             _lastTime = (new Date()).getTime();
-            (playType && raf(_ani)) || setTimeout(_ani,16);
+            (playType && raf(_ani)) || setTimeout(_ani,16.6);
         }
 
         function easeInOut(t, b, c, d){
